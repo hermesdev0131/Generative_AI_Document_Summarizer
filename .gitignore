@@ -1,6 +1,8 @@
+.vscode/**
 .env
 /venv/**
 /__pycache__/**
-/output/**
-/output_doc/**
 /input_doc/**
+!/input_doc/.gitkeep 
+/output_doc/**
+!/output_doc/.gitkeep 
