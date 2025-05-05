@@ -1,0 +1,6 @@
+.env
+/venv/**
+/__pycache__/**
+/output/**
+/output_doc/**
+/input_doc/**
