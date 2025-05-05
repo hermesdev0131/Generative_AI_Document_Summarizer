@@ -62,4 +62,27 @@ def summarize_pdf_sections(pdf_path, api_key, instructions):
         time.sleep(2)  # Add delay to help with TPM limits
     return summaries
     logging.info("Summarization completed.")
+
+def summarize_doc_sections(pdf_path, api_key, instructions):
+    logging.info("Starting DOC summarization...")
+    summaries = {}
+    source_text = extract_text_from_pdf(pdf_path)
+
+    for section_name in instructions.keys():
+        # instruction = instructions.get(section_name, "Summarize the following:")
+        print(f"Processing section: {section_name}")
+
+        summary = call_openai_summary(
+            source_text,
+            section_name,
+            instructions[section_name],
+            api_key,
+        )
+
+        summaries[section_name] = summary
+
+        # Optional: throttle between requests
+        time.sleep(2)  # Add delay to help with TPM limits
+    return summaries
+    logging.info("Summarization completed.")
     
