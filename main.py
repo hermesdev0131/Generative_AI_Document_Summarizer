@@ -1,7 +1,13 @@
 import os
 from summarizer import summarize_pdf_sections
-from template_sections import extract_template_sections
+from template_sections import extract_template_sections, create_template_sections
 from dotenv import load_dotenv
+#NEW
+from docx import Document
+#NEW
+from docx.shared import RGBColor, Pt, Inches
+#NEW
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 # Load environment variables from .env file
 load_dotenv()
 # Set up OpenAI API key
@@ -14,6 +20,16 @@ TEMPLATE_PATH = "template_doc/1759_Prospect Curator_Template.pdf"
 OUTPUT_DIR = "output_doc"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# NEW - This code allows us to either use PDF template or provide plaintext guidelines
+USE_PDF_TEMPLATE = False  # Set to False to use plaintext templates
+
+if USE_PDF_TEMPLATE:
+    # Get summarization instructions from template PDF
+    instructions = extract_template_sections(TEMPLATE_PATH)
+else:
+    # Example of using plaintext templates
+    instructions = create_template_sections(TEMPLATE_DOC_PATH)
 
 # Get summarization instructions from template
 instructions = extract_template_sections(TEMPLATE_PATH)
