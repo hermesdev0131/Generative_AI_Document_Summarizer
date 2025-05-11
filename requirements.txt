@@ -16,6 +16,7 @@ configobj==5.0.9
 configparser==7.2.0
 cryptography==44.0.2
 distro==1.9.0
+docx==0.2.4
 etelemetry==0.3.1
 filelock==3.18.0
 fitz==0.0.1.dev2
@@ -54,6 +55,7 @@ PyMuPDF==1.25.5
 pyparsing==3.2.3
 pypdfium2==4.30.1
 python-dateutil==2.9.0.post0
+python-docx==1.1.2
 python-dotenv==1.1.0
 pytz==2025.2
 pyxnat==1.6.3

@@ -22,18 +22,6 @@ def extract_template_sections(template_path):
         next_section = SECTION_ORDER[SECTION_ORDER.index(section) + 1] if SECTION_ORDER.index(section) + 1 < len(SECTION_ORDER) else None
         summarizes[section] = extract_section_block(full_text, section, next_section)
     return summarizes
-    # return {
-    #     "Prospect Curator": extract_section_block(full_text, "Prospect Curator", "Back of the Napkin"),
-    #     "Back of the Napkin": extract_section_block(full_text, "Back of the Napkin", "The Pitch"),
-    #     "The Pitch": extract_section_block(full_text, "The Pitch", "Rewards"),
-    #     "Rewards": extract_section_block(full_text, "Rewards", "Client Needs"),
-    #     "Client Needs": extract_section_block(full_text, "Client Needs", "The Elixir"),
-    #     "The Elixir": extract_section_block(full_text, "The Elixir", "Insurance+"),
-    #     "Insurance+": extract_section_block(full_text, "Insurance+", "Landmines"),                
-    #     "Landmines": extract_section_block(full_text, "Landmines", "Path to Close"),
-    #     "Path to Close": extract_section_block(full_text, "Path to Close", "Sustain Success"),        
-    #     "Sustain Success": extract_section_block(full_text, "Sustain Success", ""),
-    # }
 
 def create_section_block(full_text_list, section_title, next_section_title):
     full_text = "\n".join(full_text_list)
