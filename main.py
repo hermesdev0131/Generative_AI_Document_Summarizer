@@ -8,13 +8,49 @@ from docx import Document
 from docx.shared import RGBColor, Pt, Inches
 #NEW
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+import logging
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(override=True)
 # Set up OpenAI API key
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-if not OPENAI_API_KEY:
-    raise ValueError("Please set the OPENAI_API_KEY environment variable.")
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Model configuration
+MODEL_TYPE = os.getenv("MODEL_TYPE", "openai").lower()  # Options: "openai", "azure", "llama"
+
+# Set up model configuration based on the selected model type
+model_config = {
+    "model_type": MODEL_TYPE
+}
+
+if MODEL_TYPE == "openai":
+    # OpenAI configuration
+    model_config["api_key"] = os.getenv("OPENAI_API_KEY")
+    if not model_config["api_key"]:
+        raise ValueError("Please set the OPENAI_API_KEY environment variable.")
+    
+# elif MODEL_TYPE == "azure":
+#     # Azure OpenAI configuration
+#     model_config["api_key"] = os.getenv("AZURE_OPENAI_API_KEY")
+#     model_config["endpoint"] = os.getenv("AZURE_OPENAI_ENDPOINT")
+#     model_config["deployment_name"] = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+    
+#     if not all([model_config["api_key"], model_config["endpoint"], model_config["deployment_name"]]):
+#         raise ValueError("Please set all required Azure OpenAI environment variables: "
+#                          "AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT_NAME")
+    
+elif MODEL_TYPE == "llama":
+    # Llama configuration
+    model_config["model_path"] = os.getenv("LLAMA_MODEL_PATH")
+    
+    if not model_config["model_path"]:
+        raise ValueError("Please set the LLAMA_MODEL_PATH environment variable.")
+    
+    if not os.path.exists(model_config["model_path"]):
+        raise FileNotFoundError(f"Llama model not found at '{model_config['model_path']}'")
+else:
+    raise ValueError(f"Unsupported model type: {MODEL_TYPE}. Choose from 'openai', 'azure', or 'llama'.")
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DOC_PATH = os.path.join(current_dir, "template_doc", "template.docx")
@@ -85,12 +121,14 @@ for filename in os.listdir(INPUT_DIR):
         base_name = os.path.splitext(filename)[0]
         output_path = os.path.join(OUTPUT_DIR, f"{base_name}_summary.docx")
 
-        print(f"Processing {filename}...")
+        # print(f"Processing {filename}...")
+        logging.info(f"Using model type: {MODEL_TYPE}")
 
         # Get summaries for all sections
-        summaries = summarize_doc_sections(input_path, OPENAI_API_KEY, instructions)
+        summaries = summarize_doc_sections(input_path, model_config, instructions)
 
         # NEW - Create formatted Word document
         create_formatted_docx(summaries, output_path)
 
-        print(f"Created: {output_path}")
+        # print(f"Created: {output_path}")
+        logging.info(f"Successfully created summary at {output_path}")
