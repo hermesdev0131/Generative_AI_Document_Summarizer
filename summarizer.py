@@ -32,11 +32,11 @@ Write the '{section_title}' section:
             )
             return response.choices[0].message["content"].strip()
         except openai.error.RateLimitError:
-            print(f"Rate limit exceeded. Retrying in {retry_delay} seconds...")
+            # print(f"Rate limit exceeded. Retrying in {retry_delay} seconds...")
             time.sleep(retry_delay)
             retry_delay *= 2  # Exponential backoff
         except Exception as e:
-            print(f"An error occurred: {e}")
+            # print(f"An error occurred: {e}")
             return ""
     
 
