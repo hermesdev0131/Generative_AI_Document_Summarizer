@@ -1,6 +1,7 @@
 import os
-from summarizer import summarize_pdf_sections, summarize_doc_sections
+from summarizer import summarize_doc_sections
 from template_sections import extract_template_sections, create_template_sections
+
 from dotenv import load_dotenv
 #NEW
 from docx import Document
@@ -30,15 +31,15 @@ if MODEL_TYPE == "openai":
     if not model_config["api_key"]:
         raise ValueError("Please set the OPENAI_API_KEY environment variable.")
     
-# elif MODEL_TYPE == "azure":
-#     # Azure OpenAI configuration
-#     model_config["api_key"] = os.getenv("AZURE_OPENAI_API_KEY")
-#     model_config["endpoint"] = os.getenv("AZURE_OPENAI_ENDPOINT")
-#     model_config["deployment_name"] = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+elif MODEL_TYPE == "azure":
+    # Azure OpenAI configuration
+    model_config["api_key"] = os.getenv("AZURE_OPENAI_API_KEY")
+    model_config["endpoint"] = os.getenv("AZURE_OPENAI_ENDPOINT")
+    model_config["deployment_name"] = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
     
-#     if not all([model_config["api_key"], model_config["endpoint"], model_config["deployment_name"]]):
-#         raise ValueError("Please set all required Azure OpenAI environment variables: "
-#                          "AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT_NAME")
+    if not all([model_config["api_key"], model_config["endpoint"], model_config["deployment_name"]]):
+        raise ValueError("Please set all required Azure OpenAI environment variables: "
+                         "AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT_NAME")
     
 elif MODEL_TYPE == "llama":
     # Llama configuration
@@ -56,7 +57,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DOC_PATH = os.path.join(current_dir, "template_doc", "template.docx")
 INPUT_DIR = "input_doc"
 TEMPLATE_PATH = "template_doc/1759_Prospect Curator_Template.pdf"
-# TEMPLATE_DOC_PATH = 
 OUTPUT_DIR = "output_doc"
 if not os.path.exists(TEMPLATE_DOC_PATH):
     raise FileNotFoundError(f"Template file not found at '{TEMPLATE_DOC_PATH}'")
@@ -116,7 +116,7 @@ def create_formatted_docx(summaries, output_path):
 
 
 for filename in os.listdir(INPUT_DIR):
-    if filename.endswith(".pdf"):
+    if filename.lower().endswith((".pdf", ".docx")):
         input_path = os.path.join(INPUT_DIR, filename)
         base_name = os.path.splitext(filename)[0]
         output_path = os.path.join(OUTPUT_DIR, f"{base_name}_summary.docx")

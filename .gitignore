@@ -6,3 +6,4 @@
 !/input_doc/.gitkeep 
 /output_doc/**
 !/output_doc/.gitkeep 
+/models/**
