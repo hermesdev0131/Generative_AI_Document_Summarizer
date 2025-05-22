@@ -5,9 +5,11 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 # === CONFIGURATION ===
 # url = "https://huggingface.co/NoelJacob/Meta-Llama-3-8B-Instruct-Q4_K_M-GGUF/resolve/main/meta-llama-3-8b-instruct.Q4_K_M.gguf"
-url = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+# url = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+# url = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q2_K.gguf"
+url = "https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf"
 output_dir = "models"  # relative path to ./models
-output_file = os.path.join(output_dir, "meta-llama-3-8b-instruct.Q4_K_M.gguf")
+output_file = os.path.join(output_dir, "tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf")
 
 hf_token = os.getenv("HF_TOKEN")  # or set like: "hf_abc123..."
 
