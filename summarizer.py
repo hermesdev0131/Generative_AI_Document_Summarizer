@@ -8,6 +8,8 @@ from llama_cpp import Llama
 from openai import AzureOpenAI, OpenAIError
 from LLamaChunkedSummarizer import LLamaChunkedSummarizer
 from docx import Document
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+from azure.core.credentials import AzureKeyCredential
 
 logging.basicConfig(level=logging.INFO)
 
@@ -46,7 +48,7 @@ def call_azure_openai_summary(text, section_title, section_instruction, api_key,
     client = AzureOpenAI(
         api_version="2025-01-01-preview",
         azure_endpoint=endpoint,
-        api_key=api_key,
+        api_key=api_key
     )
 
     prompt = f"""
@@ -81,7 +83,14 @@ Write the '{section_title}' section:
                     top_p=1.0,
                     model=deployment_name,
                 )
-                return response.choices[0].message.content.strip()
+                
+                full_response = ""
+                for chunk in response:
+                    if hasattr(chunk, 'choices') and chunk.choices and len(chunk.choices) > 0:
+                        delta = chunk.choices[0].delta
+                        if hasattr(delta, 'content') and delta.content is not None:
+                            full_response += delta.content
+                return full_response.strip()
             except OpenAIError as e:
                 if "Rate limit" in str(e):
                     logging.warning(f"Rate limit exceeded. Retrying in {retry_delay} seconds...")
