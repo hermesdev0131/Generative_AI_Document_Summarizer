@@ -16,8 +16,8 @@ A tool for summarizing PDF documents using various AI models including OpenAI, A
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/hermesdev0131/Generate_AI_Document_Summarizer.git
-cd Generate_AI_Document_Summarizer
+git clone https://github.com/hermesdev0131/Generative_AI_Document_Summarizer.git
+cd Generative_AI_Document_Summarizer
 ```
 
 2. Install the required dependencies:
